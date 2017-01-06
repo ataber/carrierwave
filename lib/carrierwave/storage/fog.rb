@@ -225,6 +225,17 @@ module CarrierWave
         end
 
         ##
+        # Set content-encoding header
+        #
+        # === Returns
+        #
+        # [String] returns new content encoding value
+        #
+        def content_encoding=(new_content_encoding)
+          @content_encoding = new_content_encoding
+        end
+
+        ##
         # Remove the file from service
         #
         # === Returns
@@ -311,10 +322,11 @@ module CarrierWave
             fog_file = new_file.to_file
             @content_type ||= new_file.content_type
             @file = directory.files.create({
-              :body         => (fog_file ? fog_file : new_file).read,
-              :content_type => @content_type,
-              :key          => path,
-              :public       => @uploader.fog_public
+              :body             => (fog_file ? fog_file : new_file).read,
+              :content_type     => @content_type,
+              :content_encoding => @content_encoding,
+              :key              => path,
+              :public           => @uploader.fog_public
             }.merge(@uploader.fog_attributes))
             fog_file.close if fog_file && !fog_file.closed?
           end
