@@ -223,7 +223,11 @@ module CarrierWave
       mkdir!(new_path, directory_permissions)
       copy!(new_path)
       chmod!(new_path, permissions)
-      self.class.new({:tempfile => new_path, :content_type => content_type})
+      self.class.new({
+        :tempfile => new_path,
+        :content_type => content_type,
+        :content_encoding => content_encoding
+      })
     end
 
     ##
@@ -281,6 +285,31 @@ module CarrierWave
     #
     def content_type=(type)
       @content_type = type
+    end
+
+    ##
+    # Returns the content encoding of the file.
+    #
+    # === Returns
+    #
+    # [String] the content encoding of the file
+    #
+    def content_encoding
+      return @content_encoding if @content_encoding
+      if @file.respond_to?(:content_encoding) and @file.content_encoding
+        @content_encoding = @file.content_encoding.to_s.chomp
+      end
+    end
+
+    ##
+    # Sets the content encoding of the file.
+    #
+    # === Returns
+    #
+    # [String] the content encoding of the file
+    #
+    def content_encoding=(encoding)
+      @content_encoding = encoding
     end
 
     ##

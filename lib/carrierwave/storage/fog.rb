@@ -321,6 +321,7 @@ module CarrierWave
           else
             fog_file = new_file.to_file
             @content_type ||= new_file.content_type
+            @content_encoding ||= new_file.content_encoding
             @file = directory.files.create({
               :body             => (fog_file ? fog_file : new_file).read,
               :content_type     => @content_type,
