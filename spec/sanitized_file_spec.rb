@@ -213,6 +213,15 @@ describe CarrierWave::SanitizedFile do
     end
   end
 
+  describe "#content_encoding=" do
+    it "sets content_encoding" do
+      sanitized_file = CarrierWave::SanitizedFile.new(content_encoding: nil)
+      sanitized_file.content_encoding = "gzip"
+
+      expect(sanitized_file.content_encoding).to eq("gzip")
+    end
+  end
+
   shared_examples_for "all valid sanitized files" do
     describe '#empty?' do
       it "should not be empty" do
